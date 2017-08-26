@@ -52,6 +52,12 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/target/client</directory>
+				<targetPath>static</targetPath>
+			</resource>
+		</resources>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
@@ -66,12 +72,12 @@
 									  dir="../client">
 									<arg value="/c"/>
 									<arg value="ng"/>
-									<arg value="build"/>
+									<arg value="build -prod"/>
 								</exec>
 								<exec executable="/bin/sh" osfamily="mac"
 									  dir="../client">
 									<arg value="-c"/>
-									<arg value="ng build"/>
+									<arg value="ng build -prod"/>
 								</exec>
 							</tasks>
 						</configuration>
