@@ -1,4 +1,4 @@
-package com.example.angular.config;
+package com.example.angular.config.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;

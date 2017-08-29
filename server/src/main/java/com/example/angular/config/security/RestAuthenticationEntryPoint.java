@@ -1,4 +1,4 @@
-package com.example.angular.config;
+package com.example.angular.config.security;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
