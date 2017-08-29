@@ -3,6 +3,4 @@
 **/dist
 **/target
 **/node_modules
-**/server/src/main/resources/static/home
-**/server/src/main/webapp/client
-**/server/src/main/webapp/WEB-INF/views/index.jsp
+**/server/src/main/resources/templates/index.html

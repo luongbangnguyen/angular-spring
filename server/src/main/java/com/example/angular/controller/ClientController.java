@@ -2,17 +2,20 @@ package com.example.angular.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created by nlbang on 8/29/2017.
+ * Created by bangnl on 8/30/17.
  */
 @Controller
-@RequestMapping("/")
-public class IndexController {
+public class ClientController {
 
-    @GetMapping
-    public String indexPage() {
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("login")
+    public String login() {
         return "index";
     }
 }
