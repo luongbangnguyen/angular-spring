@@ -3,4 +3,3 @@
 **/dist
 **/target
 **/node_modules
-**/server/src/main/resources/templates/index.html

@@ -1,24 +1,23 @@
 package com.example.angular.config.security;
 
+import com.example.angular.config.web.OriginFilterCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
 /**
  * Created by nlbang on 8/24/2017.
  */
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -29,15 +28,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LogoutSuccessHandler logoutSuccessHandler;
 
+    private final OriginFilterCustom originFilterCustom;
+
     @Autowired
     WebSecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint,
                       AuthenticationSuccessHandler authenticationSuccessHandler,
                       AuthenticationFailureHandler authenticationFailureHandler,
-                      LogoutSuccessHandler logoutSuccessHandler) {
+                      LogoutSuccessHandler logoutSuccessHandler, OriginFilterCustom originFilterCustom) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.logoutSuccessHandler = logoutSuccessHandler;
+        this.originFilterCustom = originFilterCustom;
     }
 
     @Override
@@ -54,8 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
-                .logout().permitAll().
-                logoutSuccessHandler(logoutSuccessHandler);
+                .logout().permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .and()
+                .addFilterAfter(originFilterCustom, WebAsyncManagerIntegrationFilter.class);
     }
 
     @Override

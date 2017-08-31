@@ -55,12 +55,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>${basedir}/target/client</directory>
-				<targetPath>static</targetPath>
-			</resource>
-		</resources>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
@@ -71,18 +65,45 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>delete-static-file</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<delete>
+									<fileset dir="${project.basedir}/src/main/resources/static" includes="*.*" />
+								</delete>
+								<delete>
+									<fileset dir="${project.basedir}/src/main/resources/templates" includes="index.html" />
+								</delete>
+							</tasks>
+						</configuration>
+					</execution>
+					<execution>
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
 								<exec executable="cmd" osfamily="windows"
 									  dir="../client">
 									<arg value="/c"/>
-									<arg value="ng build -prod"/>
+									<arg value="npm install"/>
+								</exec>
+								<exec executable="cmd" osfamily="windows"
+									  dir="../client">
+									<arg value="/c"/>
+									<arg value="ng build -prod -d static"/>
 								</exec>
 								<exec executable="/bin/sh" osfamily="mac"
 									  dir="../client">
 									<arg value="-c"/>
-									<arg value="ng build -prod"/>
+									<arg value="npm install"/>
+								</exec>
+								<exec executable="/bin/sh" osfamily="mac"
+									  dir="../client">
+									<arg value="-c"/>
+									<arg value="ng build -prod -d static"/>
 								</exec>
 							</tasks>
 						</configuration>
@@ -102,7 +123,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/client</outputDirectory>
+							<outputDirectory>${basedir}/src/main/resources/static</outputDirectory>
 							<overwrite>true</overwrite>
 							<resources>
 								<resource>

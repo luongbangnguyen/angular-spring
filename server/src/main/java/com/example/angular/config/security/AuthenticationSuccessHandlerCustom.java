@@ -1,6 +1,8 @@
 package com.example.angular.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -20,16 +22,18 @@ public class AuthenticationSuccessHandlerCustom extends SimpleUrlAuthenticationS
 
     private final ObjectMapper mapper;
 
+    @Value("${address.origin.access}")
+    private String addressOrigin;
+
     AuthenticationSuccessHandlerCustom(MappingJackson2HttpMessageConverter messageConverter) {
         this.mapper = messageConverter.getObjectMapper();
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_OK);
-
         Object userDetails =  authentication.getPrincipal();
-
 
         PrintWriter writer = response.getWriter();
         mapper.writeValue(writer, userDetails);

@@ -1,17 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component } from "@angular/core";
+import { LoginForm } from "./loginForm";
+import { AuthenticationService } from "../../services/authenticaiton.service"
 
 @Component({
   selector: 'login-component',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
+  constructor(private authenticationService: AuthenticationService ){}
 
-  constructor() {
+  model = new LoginForm();
 
+  onSubmit() {
+    this.authenticationService.login(this.model.username, this.model.password);
   }
-
-  ngOnInit() {
-  }
-
 }
