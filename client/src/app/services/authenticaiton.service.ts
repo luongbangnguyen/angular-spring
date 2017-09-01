@@ -1,20 +1,18 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {LoginForm} from "../model/login-form";
+import {Api} from "../api";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class AuthenticationService {
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string) {
-    this.http.post("http://localhost:8080/login",null,{
-      params: new HttpParams().set('username', username).set("password", password)
-    }).subscribe(
-      data => {
-        console.log(data['username']);
-        console.log(data['authorities']);
-      },
-      error => {
-        console.log(error);
-      });
+  login(loginForm: LoginForm) {
+    this.http.post(Api.LOGIN_API,loginForm).map((res: Response) => {
+      console.log(res.json())
+    }).catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 }

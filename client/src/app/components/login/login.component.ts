@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { LoginForm } from "./loginForm";
+import { LoginForm } from "../../model/login-form";
 import { AuthenticationService } from "../../services/authenticaiton.service"
 
 @Component({
@@ -13,6 +13,6 @@ export class LoginComponent{
   model = new LoginForm();
 
   onSubmit() {
-    this.authenticationService.login(this.model.username, this.model.password);
+    this.authenticationService.login(this.model);
   }
 }

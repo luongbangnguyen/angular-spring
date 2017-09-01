@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
@@ -45,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
@@ -53,8 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .permitAll()
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
                 .and()
                 .logout().permitAll()
                 .logoutSuccessHandler(logoutSuccessHandler)
@@ -69,4 +69,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("user").password("user").roles("USER");
     }
+
+
+    private UsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
+            throws Exception {
+        UsernamePasswordAuthenticationFilter filter = new JsonUserNameAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        return filter;
+    }
+
+
 }
