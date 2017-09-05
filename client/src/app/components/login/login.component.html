@@ -27,6 +27,7 @@
         </td>
       </tr>
     </table>
+    <div *ngIf="loginError"></div>
     <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
     <button type="reset">Reset</button>
   </form>
