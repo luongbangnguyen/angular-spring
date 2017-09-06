@@ -6,16 +6,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './components/app/app.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { WebSocketComponent } from './components/websocket/websocket.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { AuthenticationService } from './services/authenticaiton.service'
+import { AuthenticationService } from './services/authenticaiton.service';
+import { StompService } from 'ng2-stomp-service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    WebSocketComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,8 @@ import { AuthenticationService } from './services/authenticaiton.service'
   ],
   providers: [
     Title,
-    AuthenticationService
+    AuthenticationService,
+    StompService
   ],
   bootstrap: [AppComponent]
 })

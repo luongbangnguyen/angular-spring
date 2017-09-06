@@ -18,4 +18,9 @@ public class ClientController {
     public String login() {
         return "index";
     }
+
+    @GetMapping("websocket")
+    public String websocket() {
+        return "index";
+    }
 }

@@ -5,8 +5,9 @@ import {Api} from "../api";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import {Observable} from "rxjs/Observable";
+import 'rxjs/add/observable/throw';
 import {User} from "../model/user";
-import {AppSettings} from "../app-settings"
+import {AppConstants} from "../app-constants"
 
 @Injectable()
 export class AuthenticationService {
@@ -17,8 +18,12 @@ export class AuthenticationService {
       let user = new User();
       user.username = res["username"];
       user.role = res["authorities"][0]["authority"];
-      localStorage.setItem(AppSettings.USER_INFORMATION, JSON.stringify(user));
+      localStorage.setItem(AppConstants.USER_INFORMATION, JSON.stringify(user));
       return user;
-    }).catch(error => Observable.throw(error));
+    }).catch((error: any) => Observable.throw(error));
+  }
+
+  getUserLogin(): User {
+    return JSON.parse(localStorage.getItem(AppConstants.USER_INFORMATION));
   }
 }

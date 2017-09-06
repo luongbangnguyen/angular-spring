@@ -1,0 +1,8 @@
+<button [disabled]="isProcessing" (click)="callWebSocket()">Start</button>
+<div>
+  <pre>
+    <span *ngFor="let message of messages">
+      {{message}}
+    </span>
+  </pre>
+</div>
