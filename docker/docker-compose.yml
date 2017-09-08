@@ -1,0 +1,13 @@
+version: '3'
+services:
+  springangularapp:
+    container_name: spring-angular
+    build:
+      context: .
+    image: spring-angular:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    expose:
+      - 8080
+    ports:
+      - 8080:8080

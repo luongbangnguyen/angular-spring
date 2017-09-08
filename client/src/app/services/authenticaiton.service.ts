@@ -34,11 +34,16 @@ export class AuthenticationService {
       return JSON.parse(localStorage.getItem(AppConstants.USER_INFORMATION))
   }
 
-  checkUserLogin(): Observable<Response> {
-    return this.http.get(Api.CHECK_LOGIN_API).map((res: Response) => res)
-      .catch((error: any) =>
-        Observable.throw(error)
-      );
+  checkLogin(): Observable<boolean> {
+    return this.http.get(Api.CHECK_LOGIN_API)
+      .map(() => {
+        let user = this.getUserLogin();
+        return !!user;
+      })
+      .catch(() => Observable.create((ob) => {
+        ob.next(false);
+        ob.completed()
+      }));
   }
 
   private covertUser(res: Response): User {
