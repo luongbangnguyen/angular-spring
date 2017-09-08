@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AuthenticationService } from './services/authenticaiton.service';
 import { StompService } from 'ng2-stomp-service';
+import {AuthGuardService} from './services/auth-guard.service'
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { StompService } from 'ng2-stomp-service';
   providers: [
     Title,
     AuthenticationService,
-    StompService
+    StompService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

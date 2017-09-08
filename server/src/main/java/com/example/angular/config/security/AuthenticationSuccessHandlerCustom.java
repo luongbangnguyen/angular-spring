@@ -1,6 +1,7 @@
 package com.example.angular.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -22,9 +23,7 @@ public class AuthenticationSuccessHandlerCustom extends SimpleUrlAuthenticationS
 
     private final ObjectMapper mapper;
 
-    @Value("${address.origin.access}")
-    private String addressOrigin;
-
+    @Autowired
     AuthenticationSuccessHandlerCustom(MappingJackson2HttpMessageConverter messageConverter) {
         this.mapper = messageConverter.getObjectMapper();
     }

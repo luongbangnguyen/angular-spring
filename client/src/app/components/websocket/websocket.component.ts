@@ -10,7 +10,6 @@ import { UUID } from 'angular2-uuid';
 })
 export class WebSocketComponent implements OnInit {
 
-  private subscription : any;
   messages : Array<string> = [];
   isProcessing = false;
   destination: string;
@@ -18,11 +17,11 @@ export class WebSocketComponent implements OnInit {
   constructor(private stomp: StompService) { }
 
   ngOnInit() {
-    this.stomp.configure(AppConstants.WEB_SOCKET_CONFIG);
     this.destination = UUID.UUID();
+    this.stomp.configure(AppConstants.WEB_SOCKET_CONFIG);
     this.stomp.startConnect().then(() => {
       this.stomp.done('init');
-      this.subscription = this.stomp.subscribe('/queue/greetings/' + this.destination, this.subscribeProcessing);
+      this.stomp.subscribe(`/queue/greetings/${this.destination}`, this.subscribeProcessing);
     });
   }
 
@@ -33,7 +32,7 @@ export class WebSocketComponent implements OnInit {
 
   callWebSocket() {
     this.messages = [];
-    this.stomp.send('/app/hello/'+ this.destination,null);
+    this.stomp.send(`/app/hello/${this.destination}`,null);
   }
 
 }

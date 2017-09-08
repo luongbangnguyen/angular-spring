@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../model/user";
 import {AuthenticationService} from "../../services/authenticaiton.service";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'dashboard-component',
@@ -9,11 +10,28 @@ import {AuthenticationService} from "../../services/authenticaiton.service";
 
 })
 export class DashboardComponent implements OnInit {
-  constructor(private authenticationService: AuthenticationService) { }
 
   userLogin:User = null;
 
+  constructor(private authenticationService: AuthenticationService,
+              private router: Router) { }
+
   ngOnInit() {
+    this.getUserLogin();
+  }
+
+  logout() {
+    this.authenticationService.logout().subscribe(
+      () => {
+        this.router.navigate(['login']).then();
+      },
+      () => {
+        this.router.navigate(['login']).then();
+      }
+    );
+  }
+
+  private getUserLogin() {
     this.userLogin = this.authenticationService.getUserLogin();
   }
 

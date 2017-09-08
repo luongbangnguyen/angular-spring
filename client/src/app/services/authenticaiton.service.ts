@@ -15,15 +15,36 @@ export class AuthenticationService {
 
   login(loginForm: LoginForm): Observable<User>{
     return this.http.post(Api.LOGIN_API,loginForm).map((res: Response) => {
-      let user = new User();
-      user.username = res["username"];
-      user.role = res["authorities"][0]["authority"];
+      let user = this.covertUser(res);
       localStorage.setItem(AppConstants.USER_INFORMATION, JSON.stringify(user));
       return user;
     }).catch((error: any) => Observable.throw(error));
   }
 
+  logout(): Observable<Response>{
+    return this.http.post(Api.LOGOUT_API,null)
+      .map((res: Response) => {
+        localStorage.removeItem(AppConstants.USER_INFORMATION);
+        return res;
+      })
+      .catch((error: any) => Observable.throw(error));
+  }
+
   getUserLogin(): User {
-    return JSON.parse(localStorage.getItem(AppConstants.USER_INFORMATION));
+      return JSON.parse(localStorage.getItem(AppConstants.USER_INFORMATION))
+  }
+
+  checkUserLogin(): Observable<Response> {
+    return this.http.get(Api.CHECK_LOGIN_API).map((res: Response) => res)
+      .catch((error: any) =>
+        Observable.throw(error)
+      );
+  }
+
+  private covertUser(res: Response): User {
+    let user = new User();
+    user.username = res["username"];
+    user.role = res["authorities"][0]["authority"];
+    return user;
   }
 }

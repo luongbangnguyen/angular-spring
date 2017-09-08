@@ -9,8 +9,8 @@ import {Router} from '@angular/router'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent{
-  constructor(private authenticationService: AuthenticationService, private router: Router,){
-  }
+  constructor(private authenticationService: AuthenticationService,
+              private router: Router){}
 
   model = new LoginForm();
   loginError = false;
@@ -21,10 +21,10 @@ export class LoginComponent{
   }
 
   onSubmit() {
-    this.authenticationService.login(this.model).subscribe(_ => {
+    this.authenticationService.login(this.model).subscribe(() => {
       this.router.navigate(['']).catch();
     },
-    error => {
+      () => {
       this.loginError = true;
     }
     );
