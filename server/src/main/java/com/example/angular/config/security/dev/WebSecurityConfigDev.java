@@ -1,16 +1,14 @@
 package com.example.angular.config.security.dev;
 
-import com.example.angular.config.security.JsonUserNameAuthenticationFilter;
-import com.example.angular.config.security.RestAuthenticationEntryPoint;
+import com.example.angular.config.security.WebSecurityConfigAbstract;
 import com.example.angular.config.web.dev.OriginFilterCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,32 +21,28 @@ import org.springframework.security.web.context.request.async.WebAsyncManagerInt
 @Configuration
 @Profile("dev")
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfigDev extends WebSecurityConfigAbstract {
 
-    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    private final AuthenticationFailureHandler authenticationFailureHandler;
-
+    private final AuthenticationEntryPoint restAuthenticationEntryPoint;
     private final LogoutSuccessHandler logoutSuccessHandler;
-
     private final OriginFilterCustom originFilterCustom;
 
     @Autowired
-    WebSecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-                      AuthenticationSuccessHandler authenticationSuccessHandler,
-                      AuthenticationFailureHandler authenticationFailureHandler,
-                      LogoutSuccessHandler logoutSuccessHandler, OriginFilterCustom originFilterCustom) {
+    WebSecurityConfigDev(AuthenticationSuccessHandler authenticationSuccessHandler,
+                         AuthenticationFailureHandler authenticationFailureHandler,
+                         AuthenticationEntryPoint restAuthenticationEntryPoint,
+                         LogoutSuccessHandler logoutSuccessHandler,
+                         OriginFilterCustom originFilterCustom) {
+        super( authenticationSuccessHandler, authenticationFailureHandler);
+
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-        this.authenticationSuccessHandler = authenticationSuccessHandler;
-        this.authenticationFailureHandler = authenticationFailureHandler;
         this.logoutSuccessHandler = logoutSuccessHandler;
         this.originFilterCustom = originFilterCustom;
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .addFilterAt(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
@@ -63,24 +57,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(originFilterCustom, WebAsyncManagerIntegrationFilter.class);
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").roles("ADMIN")
-                .and()
-                .withUser("user").password("user").roles("USER");
-    }
-
-
-    private UsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
-            throws Exception {
-        UsernamePasswordAuthenticationFilter filter = new JsonUserNameAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManagerBean());
-        filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        return filter;
-    }
-
 
 }

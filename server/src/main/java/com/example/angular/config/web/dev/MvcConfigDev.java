@@ -1,5 +1,6 @@
 package com.example.angular.config.web.dev;
 
+import com.example.angular.config.web.MvcConfigBase;
 import com.example.angular.constants.PropertiesKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -16,16 +17,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  */
 @Configuration
 @Profile("dev")
-public class MvcConfig extends WebMvcConfigurationSupport{
+public class MvcConfigDev extends MvcConfigBase{
 
     @Value("${" + PropertiesKey.ADDRESS_ORIGIN_ACCESS + "}")
     private String addressOriginAccess;
-
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        super.addResourceHandlers(registry);
-    }
 
     @Override
     protected void addCorsMappings(CorsRegistry registry) {
