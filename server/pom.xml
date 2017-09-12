@@ -132,7 +132,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-resource-js</id>
+						<id>copy-dist</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -145,6 +145,25 @@
 									<directory>${project.parent.basedir}/client/dist</directory>
 									<excludes>
 										<exclude>index.html</exclude>
+										<exclude>assets/images/**/*.*</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-assets</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/resources/assets</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/client/src/assets</directory>
+									<excludes>
+										<exclude>jquery/**/*.*</exclude>
 									</excludes>
 								</resource>
 							</resources>

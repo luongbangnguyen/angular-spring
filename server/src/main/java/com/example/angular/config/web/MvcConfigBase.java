@@ -11,6 +11,6 @@ public class MvcConfigBase extends WebMvcConfigurationSupport {
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        super.addResourceHandlers(registry);
+        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
     }
 }

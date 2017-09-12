@@ -23,4 +23,9 @@ public class ClientController {
     public String websocket() {
         return "index";
     }
+
+    @GetMapping("calendar")
+    public String calendar() {
+        return "index";
+    }
 }
