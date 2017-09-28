@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {StompService} from "ng2-stomp-service";
 import {AppConstants} from "../../app-constants";
 import { UUID } from 'angular2-uuid';
@@ -8,11 +8,13 @@ import { UUID } from 'angular2-uuid';
   templateUrl: './websocket.component.html',
   styleUrls: ['./websocket.component.css']
 })
-export class WebSocketComponent implements OnInit {
+export class WebSocketComponent implements OnInit, OnDestroy {
 
   messages : Array<string> = [];
   isProcessing = false;
   destination: string;
+
+  private subscription : any;
 
   constructor(private stomp: StompService) { }
 
@@ -21,8 +23,13 @@ export class WebSocketComponent implements OnInit {
     this.stomp.configure(AppConstants.WEB_SOCKET_CONFIG);
     this.stomp.startConnect().then(() => {
       this.stomp.done('init');
-      this.stomp.subscribe(`/queue/greetings/${this.destination}`, this.subscribeProcessing);
+      this.subscription = this.stomp.subscribe(`/queue/greetings/${this.destination}`, this.subscribeProcessing);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.stomp.disconnect().then();
   }
 
   subscribeProcessing = (data) => {

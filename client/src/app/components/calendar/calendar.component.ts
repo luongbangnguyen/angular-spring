@@ -19,17 +19,26 @@ const DATE_PICKER_VALUE_ACCESSOR = {
 })
 export class CalendarComponent implements OnInit, ControlValueAccessor, OnDestroy{
 
-  @Input() value = '';
-  @Output() dateChange = new EventEmitter();
-  @ViewChild('input') input: ElementRef;
+  @Input()
+  value = '';
+
+  @Output()
+  dateChange = new EventEmitter();
+
+  @ViewChild('input')
+  input: ElementRef;
 
   constructor() { }
 
   ngOnInit() {
-    jQuery(this.input.nativeElement).datepicker({dateFormat: 'dd/mm/yy',
+    jQuery(this.input.nativeElement).datepicker({
+      dateFormat: 'dd/mm/yy',
       changeYear: true,
       changeMonth: true,
-      showOn: "button", buttonImageOnly: true, buttonText: '', buttonImage: "assets/images/icons/calendar_ico.gif",
+      showOn: "button",
+      buttonImageOnly: true,
+      buttonText: '',
+      buttonImage: "assets/images/icons/calendar_ico.gif",
       onSelect: (value) => {
         this.value = value;
         this.onChange(value);
@@ -63,9 +72,9 @@ export class CalendarComponent implements OnInit, ControlValueAccessor, OnDestro
 
   setDisabledState(isDisabled: boolean): void {
     if(isDisabled) {
-      this.input.nativeElement.disable()
+      jQuery(this.input.nativeElement).datepicker().disable();
     }else {
-      this.input.nativeElement.enable();
+      jQuery(this.input.nativeElement).datepicker().enable();
     }
   }
 

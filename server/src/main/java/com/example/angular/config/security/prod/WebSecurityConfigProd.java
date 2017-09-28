@@ -20,17 +20,14 @@ public class WebSecurityConfigProd extends WebSecurityConfigAbstract {
 
     private final AuthenticationEntryPoint restAuthenticationEntryPoint;
     private final LogoutSuccessHandler logoutSuccessHandler;
-    private final OriginFilterCustom originFilterCustom;
 
     public WebSecurityConfigProd(AuthenticationSuccessHandler authenticationSuccessHandler,
                                  AuthenticationFailureHandler authenticationFailureHandler,
                                  AuthenticationEntryPoint restAuthenticationEntryPoint,
-                                 LogoutSuccessHandler logoutSuccessHandler,
-                                 OriginFilterCustom originFilterCustom) {
+                                 LogoutSuccessHandler logoutSuccessHandler) {
         super(authenticationSuccessHandler, authenticationFailureHandler);
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.logoutSuccessHandler = logoutSuccessHandler;
-        this.originFilterCustom = originFilterCustom;
     }
 
     @Override

@@ -1,5 +1,5 @@
 <div style="text-align: center">
   <h2><a [routerLink]="['/']">Home</a></h2>
   <app-calendar [value]="date" (dateChange)="onDateChange($event)"></app-calendar>
-  <div>Date: {{ date }}</div>
+  <div>Date: {{ date | json }}</div>
 </div>
