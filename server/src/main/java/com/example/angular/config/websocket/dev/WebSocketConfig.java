@@ -21,7 +21,7 @@ public class WebSocketConfig extends WebSocketConfigBase {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/gs-guide-websocket").setHandshakeHandler(new DefaultHandshakeHandler(new TomcatRequestUpgradeStrategy()))
-                .setAllowedOrigins(addressOriginAccess)
+                .setAllowedOrigins("*")
                 .withSockJS();
     }
 
